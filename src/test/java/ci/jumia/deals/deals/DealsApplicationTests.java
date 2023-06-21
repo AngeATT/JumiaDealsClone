@@ -1,4 +1,4 @@
-package ci.jumia.deals;
+package ci.jumia.deals.deals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
