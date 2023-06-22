@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 import java.util.Map;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,17 +29,16 @@ public class Annonce {
   String description;
   @NotNull
   int prix;
-  String[] photos;
+  List<String> photos;
   @NotNull(message = "Date de création non entrée")
   String dateCreation;
   @NotBlank(message = "Categorie non spécifiée")
-  Categorie categorie;
-  @DBRef
+  Categorie categorie; //Garde pae il y a rechercher par sous categorie
   @NotNull(message = "La sous catégorie est non spécifiée")
-  SousCategorie sousCategorie;
+  SousCategorie sousCategorie; //pas string car recherche par sous categories et besoin des champs de cette sous categorie
   @NotBlank(message = "La ville est non spécifier")
-  Ville ville;
-  Quartier quartier;
+  Ville ville; //on garde car il y  a la recherche par ville
+  String quartier;
   @AssertFalse
   Boolean estValide;
   @AssertFalse
@@ -58,15 +58,6 @@ public class Annonce {
   public void setVille(Ville ville) {
     this.ville = ville;
   }
-
-  public Quartier getQuartier() {
-    return quartier;
-  }
-
-  public void setQuartier(Quartier quartier) {
-    this.quartier = quartier;
-  }
-
   public Boolean getEstValide() {
     return estValide;
   }
@@ -122,15 +113,6 @@ public class Annonce {
   public void setPrix(int prix) {
     this.prix = prix;
   }
-
-  public String[] getPhotos() {
-    return photos;
-  }
-
-  public void setPhotos(String[] photos) {
-    this.photos = photos;
-  }
-
   public String getDateCreation() {
     return dateCreation;
   }

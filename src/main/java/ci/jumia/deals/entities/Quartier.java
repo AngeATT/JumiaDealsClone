@@ -11,6 +11,6 @@ public class Quartier {
   String idQuartier;
   @NotBlank
   String libelleQuartier;
-  @DBRef
-  Ville ville;
+  String idVille;
+
 }

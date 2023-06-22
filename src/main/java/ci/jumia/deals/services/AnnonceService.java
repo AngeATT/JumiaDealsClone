@@ -16,4 +16,7 @@ public class AnnonceService {
   public List<Annonce> getAllAnnonce(){
     return annonceRepository.findAll();
   }
+  public List<Annonce> getAllAnnonces(){
+    return annonceRepository.findAll();
+  }
 }
