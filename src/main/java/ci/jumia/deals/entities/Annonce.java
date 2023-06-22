@@ -9,9 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import java.util.Date;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Annonce")
@@ -34,6 +32,7 @@ public class Annonce {
   String dateCreation;
   @NotBlank(message = "Categorie non spécifiée")
   Categorie categorie;
+  @DBRef
   @NotNull(message = "La sous catégorie est non spécifiée")
   SousCategorie sousCategorie;
   @NotBlank(message = "La ville est non spécifier")
@@ -45,6 +44,8 @@ public class Annonce {
   Boolean estVip;
   String debutVip;
   String finVip;
+  @DBRef
+  Annonceur annonceur;
   @Pattern(regexp="(^$|[0-9]{10})",message = "Numero de telephone invalide")
   int telephone;
   @AssertFalse
