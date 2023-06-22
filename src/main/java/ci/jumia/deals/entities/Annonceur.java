@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Annonceur")
@@ -33,10 +34,8 @@ public class Annonceur {
       @Max(value = 16, message = "Mot de passe trop long")
   String password;
   @NotEmpty(message = "aucun numéro de telephone entré")
-  List<@Pattern(regexp="(^$|[0-9]{10})") String> telephones;
+  Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> telephones;
   @AssertFalse
-  boolean isWha;
-  @AssertFalse
-  boolean estValide;
+  boolean isConfirme;
 
 }

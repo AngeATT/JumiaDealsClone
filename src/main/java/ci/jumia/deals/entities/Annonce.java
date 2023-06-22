@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.util.Map;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -45,11 +46,10 @@ public class Annonce {
   String debutVip;
   String finVip;
   @DBRef
+      //@NotNull TODO: supprimer ça quand on aura des données des annonceurs
   Annonceur annonceur;
-  @Pattern(regexp="(^$|[0-9]{10})",message = "Numero de telephone invalide")
-  int telephone;
-  @AssertFalse
-  boolean isWha;
+  @NotNull
+  Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> numero;
 
   public void setSousCategorie(SousCategorie sousCategorie) {
     this.sousCategorie = sousCategorie;
@@ -137,21 +137,5 @@ public class Annonce {
 
   public void setDateCreation(String dateCreation) {
     this.dateCreation = dateCreation;
-  }
-
-  public int getTelephone() {
-    return telephone;
-  }
-
-  public void setTelephone(int telephone) {
-    this.telephone = telephone;
-  }
-
-  public boolean isWha() {
-    return isWha;
-  }
-
-  public void setWha(boolean wha) {
-    isWha = wha;
   }
 }

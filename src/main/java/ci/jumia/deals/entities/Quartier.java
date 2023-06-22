@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document("Quartier")
 public class Quartier {
   @Id
   String idQuartier;
