@@ -47,7 +47,7 @@ public class Annonce {
   String finVip;
   @DBRef
       //@NotNull TODO: supprimer ça quand on aura des données des annonceurs
-  Annonceur annonceur;
+  UtilisateurEntity utilisateur;
   @NotNull
   Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> numero;
 
