@@ -11,6 +11,6 @@ public class Quartier {
   String idQuartier;
   @NotBlank
   String libelleQuartier;
-  String idVille;
+  String ville;
 
 }

@@ -14,9 +14,7 @@ import jakarta.validation.constraints.Pattern;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +23,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Document("Annonceur")
 public class UtilisateurEntity implements UserDetails {
@@ -35,11 +32,6 @@ public class UtilisateurEntity implements UserDetails {
   @NotBlank(message = "Nom obligatoire")
   @Pattern(regexp = "[a-zA-Z ]*")
   String nom;
-  @NotBlank(message = "Prenom obligatoire")
-      @Min(value = 2, message = "Entrez un prenom d'au moins 2 lettres")
-      @Max(value = 50, message = "maximum de caractères dépassé")
-  @Pattern(regexp = "[a-zA-Z ]*")
-  String prenom;
   @Email(message = "format d'email invalide")
   String email;
   @NotBlank(message = "Mot de passe obligatoire")
@@ -47,12 +39,21 @@ public class UtilisateurEntity implements UserDetails {
       @Max(value = 16, message = "Mot de passe trop long")
   String password;
   @NotEmpty(message = "aucun numéro de telephone entré")
-  Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> telephones;
+  Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> numeros;
   @AssertFalse
   boolean isConfirme;
 
   @AssertFalse
   boolean isActive;
+
+  public UtilisateurEntity(String nom, String email, String password, Map<String,Boolean> numeros, boolean isconfirme, boolean isActive ){
+    this.nom = nom;
+    this.email = email;
+    this.password = password;
+    this.numeros = numeros;
+    this.isConfirme = isconfirme;
+    this.isActive = isActive;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -88,4 +89,6 @@ public class UtilisateurEntity implements UserDetails {
   public boolean isEnabled() {
     return isConfirme;
   }
+
+
 }
