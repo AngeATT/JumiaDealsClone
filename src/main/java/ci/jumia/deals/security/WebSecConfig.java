@@ -10,34 +10,35 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableMethodSecurity
 public class WebSecConfig {
 
-  @Bean
-      public PasswordEncoder passwordEncoder(){
-    return new BCryptPasswordEncoder();
-  }
+  @Autowired
+  PasswordEncoder passwordEncoder;
+
   @Autowired
   UtilisateurService utilisateurService;
+
+
   @Autowired
-  DaoAuthenticationProvider authenticationProvider(){
+  DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(utilisateurService);
-    authProvider.setPasswordEncoder(passwordEncoder());
+    authProvider.setPasswordEncoder(passwordEncoder);
 
     return authProvider;
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration)
       throws Exception {
-    return  authenticationConfiguration.getAuthenticationManager();
+    return authenticationConfiguration.getAuthenticationManager();
   }
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf(AbstractHttpConfigurer::disable)
