@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Map;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +33,7 @@ public class UtilisateurEntity implements UserDetails {
   @NotBlank(message = "Nom obligatoire")
   @Pattern(regexp = "[a-zA-Z ]*")
   String nom;
+  @Indexed(unique = true)
   @Email(message = "format d'email invalide")
   String email;
   @NotBlank(message = "Mot de passe obligatoire")
