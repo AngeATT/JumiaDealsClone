@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UtilisateurRepository extends CrudRepository<UtilisateurEntity,String> {
 
-
-  public Optional<UtilisateurEntity> findByEmail(String s);
+  Optional<UtilisateurEntity> findByEmail(String s);
   Boolean existsByEmail(String email);
 }

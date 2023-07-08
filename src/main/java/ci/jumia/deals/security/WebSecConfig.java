@@ -9,13 +9,16 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
+
 
 @Configuration
 @EnableMethodSecurity
 public class WebSecConfig {
+  @Autowired
+  CorsConfigurationSource configurationSource;
 
   @Autowired
   PasswordEncoder passwordEncoder;
@@ -41,7 +44,7 @@ public class WebSecConfig {
   }
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.csrf(AbstractHttpConfigurer::disable)
+    httpSecurity.csrf(crsf -> crsf.disable())
         .authorizeHttpRequests(auth ->
             auth.requestMatchers("/login").permitAll()
                 .requestMatchers("/register").permitAll()
