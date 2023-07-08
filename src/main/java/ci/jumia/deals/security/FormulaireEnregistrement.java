@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class FormulaireEnregistrement {
   String nom;
   String email;
-  String numero;
   String password;
   Map<String, Boolean> numeros;
   //TODO : valider les comptes manuellement après
