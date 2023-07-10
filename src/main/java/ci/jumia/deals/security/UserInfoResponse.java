@@ -1,8 +1,7 @@
 package ci.jumia.deals.security;
 
 import jakarta.validation.constraints.Email;
-import java.util.Collection;
-import org.springframework.security.core.GrantedAuthority;
+import java.util.List;
 
 /**
  * <p></p>
@@ -11,5 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
  */
 public record UserInfoResponse(String annonceurId,
                                @Email(message = "format d'email invalide") String email,
-                               Collection<? extends GrantedAuthority> authorities) {
+                               List<String> authorities) {
+
 }
