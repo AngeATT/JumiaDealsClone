@@ -1,5 +1,6 @@
 package ci.jumia.deals.security;
 
+import ci.jumia.deals.security.jwt.AuthTokenFilter;
 import ci.jumia.deals.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+
 
 
 @Configuration
@@ -25,6 +30,14 @@ public class WebSecConfig {
 
   @Autowired
   UtilisateurService utilisateurService;
+
+  @Autowired
+  private AuthenticationEntryPoint unauthorizedHandler;
+
+  @Bean
+  public AuthTokenFilter authenticationJwtTokenFilter() {
+    return new AuthTokenFilter();
+  }
 
 
   @Autowired
@@ -51,6 +64,9 @@ public class WebSecConfig {
                 .anyRequest().authenticated());
 
     httpSecurity.authenticationProvider(authenticationProvider());
+
+    httpSecurity.addFilterBefore(authenticationJwtTokenFilter(),
+        UsernamePasswordAuthenticationFilter.class);
     return httpSecurity.build();
   }
 

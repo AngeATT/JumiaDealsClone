@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-@CrossOrigin()
+@CrossOrigin(origins = "")
+@RequestMapping(path = "/api")
 @RestController
 public class AuthController {
   @Lazy
@@ -45,7 +47,7 @@ public class AuthController {
     );
   }
 
-  @GetMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<?> loginTest(){
     return ResponseEntity.ok().body(
@@ -56,7 +58,7 @@ public class AuthController {
     );
   }
 
-  @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<?> enregistrement(@Valid @RequestBody FormulaireEnregistrement formulaireEnregistrement ){
      if (utilisateurService.userExistsByEmail(formulaireEnregistrement.email)){
