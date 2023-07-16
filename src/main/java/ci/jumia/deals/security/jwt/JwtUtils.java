@@ -43,6 +43,7 @@ public class JwtUtils {
    * @param request
    * @return
    */
+  
   public String getJwtFromCookies(HttpServletRequest request){
     Cookie cookie = WebUtils.getCookie(request,jwtCookie);
     if (cookie != null){
@@ -93,7 +94,7 @@ public class JwtUtils {
         .setSubject(email)
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date().getTime() + jwtExpirationMs)))
-        .signWith(key(), SignatureAlgorithm.ES256)
+        .signWith(key(), SignatureAlgorithm.HS256)
         .compact();
 
   }

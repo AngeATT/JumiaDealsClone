@@ -59,8 +59,7 @@ public class WebSecConfig {
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf(crsf -> crsf.disable())
         .authorizeHttpRequests(auth ->
-            auth.requestMatchers("/login").permitAll()
-                .requestMatchers("/register").permitAll()
+            auth.requestMatchers("/api/auth/*").permitAll()
                 .anyRequest().authenticated());
 
     httpSecurity.authenticationProvider(authenticationProvider());

@@ -11,6 +11,6 @@ public class MessageResponse {
 
 
   public MessageResponse(String reponse) {
-    this.reponse = reponse;
+    this.reponse = "{\"message\" : \""+  reponse + "\"}";
   }
 }

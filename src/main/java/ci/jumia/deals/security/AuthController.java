@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-@CrossOrigin(origins = "http://localhost:4200")
+
+@CrossOrigin(allowCredentials = "true",origins = "http://localhost:4200/")
 @RequestMapping(path = "/api/auth")
 @RestController
 public class AuthController {
@@ -37,8 +38,13 @@ public class AuthController {
   UtilisateurService utilisateurService;
   @Autowired
   JwtUtils jwtUtils;
-  @PostMapping(path = "/login")
+
+  @GetMapping(path = "/test")
   @ResponseStatus(HttpStatus.OK)
+  HttpStatus testApi(){
+  return HttpStatus.OK;
+  }
+  @PostMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws UsernameNotFoundException {
 
     Authentication authentication =
@@ -59,8 +65,7 @@ public class AuthController {
     );
   }
 
-  @GetMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/login")
   ResponseEntity<?> loginTest(){
     return ResponseEntity.ok().body(
         new UserInfoResponse(
@@ -70,7 +75,7 @@ public class AuthController {
     );
   }
 
-  @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/register")
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<?> enregistrement(@Valid @RequestBody FormulaireEnregistrement formulaireEnregistrement ){
      if (utilisateurService.userExistsByEmail(formulaireEnregistrement.email)){
@@ -78,7 +83,7 @@ public class AuthController {
     }else{
        utilisateurService.enregistrementUtilisateur(formulaireEnregistrement);
 
-       return ResponseEntity.ok().body("Utilisateur enregistré avec succès");
+       return ResponseEntity.ok().body("{"+  " \"message\" : \"enregistrement ok\"  " +"}");
      }
   }
 

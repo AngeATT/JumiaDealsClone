@@ -67,7 +67,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
       }catch (Exception e){
         logger.error("Impossible de faire l'authentification de l'utilisateur");
       }
-
       filterChain.doFilter(request,response);
   }
 
