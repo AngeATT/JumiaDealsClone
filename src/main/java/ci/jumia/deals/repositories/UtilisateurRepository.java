@@ -1,6 +1,6 @@
 package ci.jumia.deals.repositories;
 
-import ci.jumia.deals.entities.UtilisateurEntity;
+import ci.jumia.deals.entities.user.UtilisateurEntity;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 

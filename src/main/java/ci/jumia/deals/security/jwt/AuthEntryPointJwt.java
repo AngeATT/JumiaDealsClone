@@ -14,8 +14,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 /**
- * <p></p>
- *
  * @author Attoungbre Ange François 2023-07-10
  */
 @Component

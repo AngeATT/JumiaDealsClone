@@ -7,7 +7,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import java.security.Key;
 import io.jsonwebtoken.security.Keys;
-import ci.jumia.deals.entities.UtilisateurEntity;
+import ci.jumia.deals.entities.user.UtilisateurEntity;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,7 +65,7 @@ public class JwtUtils {
   }
 
   public String getEmailFromJwtToken(String token){
-    return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJwt(token)
+    return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token)
         .getBody().getSubject();
   }
 

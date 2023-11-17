@@ -1,4 +1,4 @@
-package ci.jumia.deals.entities;
+package ci.jumia.deals.entities.user;
 
 import ci.jumia.deals.security.ERoles;
 import jakarta.persistence.Entity;

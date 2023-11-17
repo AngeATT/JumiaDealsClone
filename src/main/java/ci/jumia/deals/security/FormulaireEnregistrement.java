@@ -1,6 +1,6 @@
 package ci.jumia.deals.security;
 
-import ci.jumia.deals.entities.UtilisateurEntity;
+import ci.jumia.deals.entities.user.UtilisateurEntity;
 import java.util.Map;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
