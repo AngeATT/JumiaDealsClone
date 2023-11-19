@@ -1,7 +1,7 @@
 package ci.jumia.deals.services;
 
-import ci.jumia.deals.ErrorMessageException;
-import ci.jumia.deals.UserNotFoundException;
+import ci.jumia.deals.exception.ErrorMessageException;
+import ci.jumia.deals.exception.UserNotFoundException;
 import ci.jumia.deals.entities.user.UserUtilities;
 import ci.jumia.deals.entities.user.UtilisateurEntity;
 import ci.jumia.deals.exception.ObjetNonTrouverException;

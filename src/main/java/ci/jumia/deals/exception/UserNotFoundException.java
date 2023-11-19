@@ -1,4 +1,4 @@
-package ci.jumia.deals;
+package ci.jumia.deals.exception;
 
 /**
  * <p></p>

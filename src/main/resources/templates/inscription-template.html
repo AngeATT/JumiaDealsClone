@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+}
+
+#root{
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+#divTop{
+    background-color: #34679d;
+    height: 50px;
+}
+#divBottom{
+    background-color: #34679d;
+    height: 50px;
+}
+#contenu{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#contenu>h2{
+    text-align: center;
+}
+#btnSeConnecter{
+    height: 40px;
+    width: 220px;
+    border-width: 1px;
+    border-color: bisque;
+    border-radius: 2px;
+    z-index: 2;
+    background-color: bisque;
+    font-size: 15px;
+    color: rgb(63, 56, 56);
+    cursor: pointer;
+    font-size: large;
+    font-weight: 500;
+}
+#btnSeConnecter:hover{
+    background-color: rgb(252, 185, 104);
+}
+.center-elements{
+    display: flex;
+    justify-content: center;
+}
+#link-validation{
+    color: #072544;
+    cursor: pointer;
+}
+#link-validation:hover{
+    color: #072544;
+}
+
+  </style>
+  <title>Validation de votre compte Jumia Deals </title>
+</head>
+<body>
+<div id="root">
+  <div id="divTop">
+
+  </div>
+  <div id="contenu">
+    <h2>
+      <p>Validation de votre inscription sur <b>Jumia Deals</b>
+    </h2>
+    <p>Bienvenue sur Jumia deals,<br>
+      vos identifiants de connexion sont les suivants : <br>
+      email : <strong th:text="${email}"></strong> <br>
+      mot de passe : <strong th:text="${password}"></strong></p>
+    <p>Cliquez sur le lien suivant pour activer votre compte<strong th:text="${lien}"></strong> <br>
+    <br>
+    <hr>
+    <p> Si vous n'avez pas créer de compte veuillez ignorer cet email, n'hésitez pas à nous
+      contacter en cas de besoin.
+    </p>
+    <p>Merci ! <br><span style="color: gray;">L’équipe de gestion des comptes Jumia Deals.</span>
+    </p>
+  </div>
+  <div id="divBottom">
+
+  </div>
+
+
+</div>
+
+</body>
+</html>
