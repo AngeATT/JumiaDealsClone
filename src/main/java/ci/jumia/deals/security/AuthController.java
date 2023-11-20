@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping(path = "/api/auth")
 @RestController
 public class AuthController {
-  private Logger logger = LoggerFactory.getLogger(AuthController.class);
+  private final Logger logger = LoggerFactory.getLogger(AuthController.class);
   @Autowired
   AuthenticationManager authenticationManager;
   @Autowired
@@ -88,5 +88,10 @@ public class AuthController {
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new MessageResponse("Deconnexion réussie"));
   }
 
+  @PostMapping(path = "/activate/{token}")
+  @ResponseStatus(code = HttpStatus.OK)
+  public void activerAccount(@PathVariable @Valid String token){
+    utilisateurService.activerUtilisateur(token);
+  }
 
 }

@@ -1,6 +1,7 @@
 package ci.jumia.deals.services;
 
 import ci.jumia.deals.exception.EmailException;
+import ci.jumia.deals.services.interfaces.EmaillSender;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;

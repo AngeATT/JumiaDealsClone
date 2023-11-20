@@ -1,35 +1,36 @@
 package ci.jumia.deals.services;
 
-import ci.jumia.deals.exception.ErrorMessageException;
-import ci.jumia.deals.exception.UserNotFoundException;
 import ci.jumia.deals.entities.user.UserUtilities;
 import ci.jumia.deals.entities.user.UtilisateurEntity;
+import ci.jumia.deals.exception.ErrorMessageException;
 import ci.jumia.deals.exception.ObjetNonTrouverException;
+import ci.jumia.deals.exception.UserNotFoundException;
 import ci.jumia.deals.repositories.UserUtilitiesRepository;
 import ci.jumia.deals.repositories.UtilisateurRepository;
 import ci.jumia.deals.security.FormulaireEnregistrement;
+import ci.jumia.deals.services.interfaces.EmaillSender;
 import jakarta.transaction.Transactional;
-
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UtilisateurService implements UserDetailsService {
-  @Autowired
-  UtilisateurRepository utilisateurRepository;
-  @Autowired
-  UserUtilitiesRepository userUtilitiesRepository;
 
-  @Autowired
-  PasswordEncoder passwordEncoder;
+  private final UtilisateurRepository utilisateurRepository;
+  private final UserUtilitiesRepository userUtilitiesRepository;
+  private final PasswordEncoder passwordEncoder;
+  private final EmaillSender emaillSender;
+
 
   public UtilisateurEntity createAnnonceur(UtilisateurEntity utilisateur){
     return utilisateurRepository.save(utilisateur);
@@ -66,7 +67,21 @@ public class UtilisateurService implements UserDetailsService {
     userUtilities.setToken(UUID.randomUUID().toString());
     userUtilities.setDateValidite(LocalDate.now().plusDays(1));
     userUtilitiesRepository.save(userUtilities);
+    envoieMailInscription(utilisateurCree,userUtilities);
     return utilisateurCree;
+  }
+
+  private void envoieMailInscription(UtilisateurEntity utilisateur,UserUtilities userUtilities) {
+    String lienApplication = "http://localhost:4200/";
+    String email = utilisateur.getEmail();
+    String password = utilisateur.getPassword();
+    String template = "inscription-template";
+    String lienInscription = String.format(lienApplication+"/activate/{%s}",userUtilities.getToken());
+    Context context = new Context();
+    context.setVariable("email",email);
+    context.setVariable("password",password);
+    context.setVariable("lien",lienInscription);
+    emaillSender.envoyerEmailAvecTemplate(email,"Confirmer inscription",template,context);
   }
 
   public void activerUtilisateur(String token){

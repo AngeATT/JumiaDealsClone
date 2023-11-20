@@ -1,4 +1,4 @@
-package ci.jumia.deals.services;
+package ci.jumia.deals.services.interfaces;
 
 import org.thymeleaf.context.Context;
 
