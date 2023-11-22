@@ -1,8 +1,8 @@
 package ci.jumia.deals.services;
 
+import ci.jumia.deals.entities.user.TokenStatut;
 import ci.jumia.deals.entities.user.UserUtilities;
 import ci.jumia.deals.entities.user.UtilisateurEntity;
-import ci.jumia.deals.exception.ErrorMessageException;
 import ci.jumia.deals.exception.ObjetNonTrouverException;
 import ci.jumia.deals.exception.UserNotFoundException;
 import ci.jumia.deals.repositories.UserUtilitiesRepository;
@@ -59,16 +59,18 @@ public class UtilisateurService implements UserDetailsService {
     return utilisateurRepository.existsByEmail(email);
   }
 
-  public UtilisateurEntity enregistrementUtilisateur(FormulaireEnregistrement formulaireEnregistrement){
+  public void saveUser(FormulaireEnregistrement formulaireEnregistrement){
     UtilisateurEntity utilisateurCree =  formulaireEnregistrement.toUtlisateur(passwordEncoder);
     utilisateurRepository.save(utilisateurCree);
+    UserUtilities userUtilities = this.creerToken(utilisateurCree);
+    envoieMailInscription(utilisateurCree,userUtilities);
+  }
+  public UserUtilities creerToken(UtilisateurEntity utilisateur){
     UserUtilities userUtilities = new UserUtilities();
     userUtilities.setId(UUID.randomUUID());
     userUtilities.setToken(UUID.randomUUID().toString());
     userUtilities.setDateValidite(LocalDate.now().plusDays(1));
-    userUtilitiesRepository.save(userUtilities);
-    envoieMailInscription(utilisateurCree,userUtilities);
-    return utilisateurCree;
+    return userUtilitiesRepository.save(userUtilities);
   }
 
   private void envoieMailInscription(UtilisateurEntity utilisateur,UserUtilities userUtilities) {
@@ -76,7 +78,7 @@ public class UtilisateurService implements UserDetailsService {
     String email = utilisateur.getEmail();
     String password = utilisateur.getPassword();
     String template = "inscription-template";
-    String lienInscription = String.format(lienApplication+"/activate/{%s}",userUtilities.getToken());
+    String lienInscription = String.format(lienApplication+"/activate/?token={%s}",userUtilities.getToken());
     Context context = new Context();
     context.setVariable("email",email);
     context.setVariable("password",password);
@@ -84,17 +86,36 @@ public class UtilisateurService implements UserDetailsService {
     emaillSender.envoyerEmailAvecTemplate(email,"Confirmer inscription",template,context);
   }
 
-  public void activerUtilisateur(String token){
-    UserUtilities userUtilities = this.userUtilitiesRepository
-            .findByToken(token)
-            .orElseThrow(()->new ObjetNonTrouverException("Token invalide"));
+  public TokenStatut activerUtilisateur(String token){
+    Optional<UserUtilities> byToken = this.userUtilitiesRepository.findByToken(token);
+    if(byToken.isEmpty()){
+      return TokenStatut.INVALID;
+    }
+    UserUtilities userUtilities = byToken.get();
     if(userUtilities.getDateValidite().isBefore(LocalDate.now())){
       UtilisateurEntity utilisateur = userUtilities.getUtilisateur();
       utilisateur.setActive(true);
       utilisateur.setConfirme(true);
       utilisateurRepository.save(utilisateur);
+      return TokenStatut.VALID;
     }else{
-      throw new ErrorMessageException("Token invalide");
+      return TokenStatut.EXPIRED;
     }
+  }
+
+  public TokenStatut renvoyerToken(String token) {
+    Optional<UserUtilities> userUtilitiesOptional = this.userUtilitiesRepository
+            .findByToken(token);
+    if(userUtilitiesOptional.isEmpty()){
+      return TokenStatut.INVALID;
+    }else {
+      UserUtilities userUtilities = userUtilitiesOptional.get();
+      this.userUtilitiesRepository.delete(userUtilities);
+      UtilisateurEntity utilisateur = userUtilities.getUtilisateur();
+      UserUtilities nouveauToken = this.creerToken(utilisateur);
+      this.envoieMailInscription(utilisateur,nouveauToken);
+      return TokenStatut.INVALID;
+    }
+
   }
 }

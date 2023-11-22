@@ -1,7 +1,11 @@
-package ci.jumia.deals.security;
+package ci.jumia.deals.security.controller;
 
 import ci.jumia.deals.MessageResponse;
+import ci.jumia.deals.entities.user.TokenStatut;
 import ci.jumia.deals.entities.user.UtilisateurEntity;
+import ci.jumia.deals.security.FormulaireEnregistrement;
+import ci.jumia.deals.security.LoginRequest;
+import ci.jumia.deals.security.UserInfoResponse;
 import ci.jumia.deals.security.jwt.JwtUtils;
 import ci.jumia.deals.services.UtilisateurService;
 import jakarta.validation.Valid;
@@ -72,10 +76,10 @@ public class AuthController {
   @PostMapping(path = "/register")
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<?> enregistrement(@Valid @RequestBody FormulaireEnregistrement formulaireEnregistrement ){
-     if (utilisateurService.userExistsByEmail(formulaireEnregistrement.email)){
+     if (utilisateurService.userExistsByEmail(formulaireEnregistrement.getEmail())){
       return ResponseEntity.badRequest().body(("Email déjà utilisée"));
     }else{
-       utilisateurService.enregistrementUtilisateur(formulaireEnregistrement);
+       utilisateurService.saveUser(formulaireEnregistrement);
 
        return ResponseEntity.ok().body("{"+  " \"message\" : \"enregistrement ok\"  " +"}");
      }
@@ -90,8 +94,14 @@ public class AuthController {
 
   @PostMapping(path = "/activate/{token}")
   @ResponseStatus(code = HttpStatus.OK)
-  public void activerAccount(@PathVariable @Valid String token){
-    utilisateurService.activerUtilisateur(token);
+  public ResponseEntity<TokenStatut> activerAccount(@PathVariable @Valid String token){
+    return ResponseEntity.ok(utilisateurService.activerUtilisateur(token));
+  }
+
+  @PostMapping(path = "/resend/{token}")
+  @ResponseStatus(code = HttpStatus.OK)
+  public ResponseEntity<TokenStatut> resendToken(@PathVariable @Valid String token){
+    return ResponseEntity.ok(utilisateurService.renvoyerToken(token));
   }
 
 }
