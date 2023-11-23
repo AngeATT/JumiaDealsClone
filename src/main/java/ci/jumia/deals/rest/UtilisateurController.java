@@ -15,6 +15,6 @@ public class UtilisateurController {
   @PostMapping
   @ResponseStatus(code= HttpStatus.CREATED)
   public UtilisateurEntity createAnnonceur(@RequestBody @Valid UtilisateurEntity utilisateur){
-    return utilisateurService.createAnnonceur(utilisateur);
+    return utilisateurService.enregistrer(utilisateur);
   }
 }

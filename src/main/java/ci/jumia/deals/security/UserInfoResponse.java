@@ -8,8 +8,7 @@ import java.util.List;
  *
  * @author Attoungbre Ange François 2023-07-07
  */
-public record UserInfoResponse(String annonceurId,
-                               @Email(message = "format d'email invalide") String email,
+public record UserInfoResponse(@Email(message = "format d'email invalide") String email,
                                List<String> authorities) {
 
 }

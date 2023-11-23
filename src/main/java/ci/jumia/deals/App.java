@@ -1,13 +1,13 @@
-package ci.jumia.deals.exception;
+package ci.jumia.deals;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DealsApplication {
+public class App {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DealsApplication.class, args);
+		SpringApplication.run(App.class, args);
 	}
 
 }

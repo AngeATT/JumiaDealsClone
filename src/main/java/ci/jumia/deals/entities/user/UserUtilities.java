@@ -1,13 +1,12 @@
 package ci.jumia.deals.entities.user;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -21,7 +20,7 @@ public class UserUtilities {
     private UUID id;
     @NotBlank
     private String token;
-    private LocalDate dateValidite = LocalDate.now();
-    @OneToOne
-    private UtilisateurEntity utilisateur;
+    private LocalDateTime dateValidite = LocalDateTime.now();
+
+    private String emailUser;
 }

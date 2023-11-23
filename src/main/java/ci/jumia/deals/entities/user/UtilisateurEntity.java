@@ -1,40 +1,31 @@
 package ci.jumia.deals.entities.user;
 
 import ci.jumia.deals.security.ERoles;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.AssertFalse;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import lombok.Data;
+import jakarta.validation.constraints.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.index.Indexed;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Data
-@Entity
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+
 @RequiredArgsConstructor
+@Setter
+@Getter
 @Document("Annonceur")
 public class UtilisateurEntity implements UserDetails {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  String annonceurId;
   @NotBlank(message = "Nom obligatoire")
   @Pattern(regexp = "[a-zA-Z ]*")
   String nom;
-  @Indexed(unique = true)
+  @Id
+  @Field("_id")
   @Email(message = "format d'email invalide")
   String email;
   @NotBlank(message = "Mot de passe obligatoire")
@@ -43,11 +34,8 @@ public class UtilisateurEntity implements UserDetails {
   String password;
   @NotEmpty(message = "aucun numéro de telephone entré")
   Map<@Pattern(regexp="(^$|[0-9]{10})") String,@AssertFalse Boolean> numeros;
-  @AssertFalse
-  boolean isConfirme;
-
-  @AssertFalse
-  boolean isActive;
+  boolean isConfirme = false;
+  boolean isActive = false;
 
   public UtilisateurEntity(String nom, String email, String password, Map<String,Boolean> numeros, boolean isconfirme, boolean isActive ){
     this.nom = nom;

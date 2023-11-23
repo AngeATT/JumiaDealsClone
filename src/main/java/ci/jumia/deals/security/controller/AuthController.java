@@ -21,10 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
-@CrossOrigin(allowCredentials = "true",origins = "http://localhost:4200/")
+@CrossOrigin(allowCredentials = "true",origins = "http://localhost:4200")
 @RequestMapping(path = "/api/auth")
 @RestController
 public class AuthController {
@@ -36,11 +35,6 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @GetMapping(path = "/test")
-  @ResponseStatus(HttpStatus.OK)
-  HttpStatus testApi(){
-  return HttpStatus.OK;
-  }
   @PostMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) throws UsernameNotFoundException {
 
@@ -57,19 +51,9 @@ public class AuthController {
         .map(GrantedAuthority::getAuthority).toList();
 
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(
-        new UserInfoResponse(utilisateur.getAnnonceurId(),
+        new UserInfoResponse(
             utilisateur.getEmail(),
             roles)
-    );
-  }
-
-  @GetMapping(path = "/login")
-  ResponseEntity<?> loginTest(){
-    return ResponseEntity.ok().body(
-        new UserInfoResponse(
-            "ange",
-            "angelo", Collections.EMPTY_LIST
-        )
     );
   }
 
@@ -92,15 +76,15 @@ public class AuthController {
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new MessageResponse("Deconnexion réussie"));
   }
 
-  @PostMapping(path = "/activate/{token}")
+  @PostMapping(path = "/activate")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<TokenStatut> activerAccount(@PathVariable @Valid String token){
+  public ResponseEntity<TokenStatut> activerAccount(@RequestBody @Valid String token){
     return ResponseEntity.ok(utilisateurService.activerUtilisateur(token));
   }
 
-  @PostMapping(path = "/resend/{token}")
+  @PostMapping(path = "/resend")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<TokenStatut> resendToken(@PathVariable @Valid String token){
+  public ResponseEntity<TokenStatut> resendToken(@RequestBody @Valid String token){
     return ResponseEntity.ok(utilisateurService.renvoyerToken(token));
   }
 
